@@ -11,6 +11,7 @@
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" 
      integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous"
       referrerpolicy="no-referrer" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -50,19 +51,29 @@
         class="border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         required />
     </div>
-    <div class="mb-4">
+    <div class="mb-10">
       <label for="other_expense" class="block mb-2 text-xl font-medium text-gray-700 font-serif">Other Expenses (₹)</label>
       <input type="text" id="other_expense"
         class="border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         required />
     </div>
+    <!-- Button aligned to bottom -->
+    <a href="#"
+      class="mt-auto bg-emerald-600 text-white text-xl font-medium px-5 py-2 rounded-lg hover:bg-emerald-500" onclick="calculate()">
+      <i class="fa-solid fa-calculator"></i> Calculate
+    </a>
+    &nbsp;&nbsp;
+    <a href="#"
+      class="mt-auto bg-amber-300 text-white text-xl font-medium px-5 py-2 rounded-lg hover:bg-amber-200" onclick="clearAll()">
+    🧹 Clear All
+    </a>
   </form>
 
   <!-- Balance Card -->
   <div class="flex flex-col justify-between text-center rounded-lg w-1/2  p-6 bg-white">
     <!-- Balance Text -->
     <div class="shadow pb-8 mt-8 pt-5 bg-teal-300 rounded-xl">
-      <h2 class="text-2xl font-bold text-gray-800">Balance</h2>
+      <h2 class="text-2xl font-bold text-gray-900">Balance</h2>
       <p class="text-3xl font-bold text-emerald-700" id="balance"></p>
       <!-- <p class="text-3xl font-bold text-emerald-700">₹28,000</p>
       <p class="text-gray-600">You have saved ₹28,000.</p> -->
@@ -74,11 +85,7 @@
       <p class="text-gray-600">You have saved ₹28,000.</p> -->
     </div>
 
-    <!-- Button aligned to bottom -->
-    <a href="#"
-      class="mt-auto bg-emerald-600 text-white text-xl font-medium px-5 py-2 rounded-lg hover:bg-emerald-500" onclick="calculate()">
-      Calculate
-    </a>
+    
   </div>
 </div>
 
@@ -122,12 +129,12 @@
  // Show initial balance (default 0 if missing)
 let balance=userDetails.balance || 0
 document.getElementById("balance").innerHTML=`₹ ${balance.toLocaleString()}<br>
-                                              <p class="text-gray-600 text-2xl">You have saved ₹ ${balance.toLocaleString()}</p>`;
+<p class="text-gray-600 text-2xl">You have saved ₹ ${balance.toLocaleString()}</p>`;
 
 // Show initial balance (default 0 if missing)
 let spent=userDetails.spent || 0
 document.getElementById("spent").innerHTML=`₹ ${spent.toLocaleString()}
-                                               <p class="text-gray-600 text-2xl">You have spent ₹ ${spent.toLocaleString()}</p>`;
+<p class="text-gray-600 text-2xl">You have spent ₹ ${spent.toLocaleString()}</p>`;
 
 localStorage.setItem(currentUser,JSON.stringify({...JSON.parse(localStorage.getItem(currentUser)),budget:[]}));
 
@@ -227,6 +234,35 @@ function logout() {
       window.location.href = "login.html";
     }
   }
+
+  function clearAll() {
+  const currentUser = localStorage.getItem("loggedUser");
+  if (currentUser) {
+    let userDetails = JSON.parse(localStorage.getItem(currentUser));
+
+    if (userDetails) {
+      // Reset values
+      userDetails.budget = [];
+      userDetails.balance = 0;
+      userDetails.spent = 0;
+
+      // Save back to localStorage
+      localStorage.setItem(currentUser, JSON.stringify(userDetails));
+
+      // Update UI
+      document.getElementById("balance").innerHTML = `₹ 0<br>
+        <p class="text-gray-600 text-2xl">You have saved ₹ 0</p>`;
+      document.getElementById("spent").innerHTML = `₹ 0
+        <p class="text-gray-600 text-2xl">You have spent ₹ 0</p>`;
+
+      // Hide chart if visible
+      document.getElementById("chartContainer").classList.add("hidden");
+
+      alert("All budget data cleared successfully!");
+    }
+  }
+}
+
 </script>
 
 </body>
