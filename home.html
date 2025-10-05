@@ -166,8 +166,10 @@ let chartInstance = null; // global chart variable
         spent:spent
     });
     saveUser()
-    document.getElementById("balance").innerText = `₹${balance.toLocaleString()}`;
-document.getElementById("spent").innerText = `₹${spent.toLocaleString()}`;
+    document.getElementById("balance").innerText = `₹ ${balance.toLocaleString()}
+     <p class="text-gray-600 text-2xl">You have saved ₹  ${balance.toLocaleString()}</p>`;
+document.getElementById("spent").innerText = `₹ ${spent.toLocaleString()}
+ <p class="text-gray-600 text-2xl">You have spent ₹ ${spent.toLocaleString()}</p>`;
 
     alert("Budget Calculated Successfully")
 
