@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+      <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" 
+     integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+ <body style="background-image: url('https://tse4.mm.bing.net/th/id/OIP.-J5mWwSIXB6OFhchxHlukQHaE5?w=1600&h=1058&rs=1&pid=ImgDetMain&o=7&rm=3'); background-repeat:no-repeat;background-size: cover;background-attachment: fixed;">
+ <nav class="sticky top-8 bg-emerald-100 shadow px-4 py-2 flex items-center z-50 rounded-xl mt-5 mr-5 ml-5">
+    <img src="https://static.vecteezy.com/system/resources/previews/050/737/541/non_2x/calculator-budget-icon-free-png.png" width="80" height="50" class="ml-8"> 
+    <span class="text-4xl text-emerald-400 font-extrabold ml-8">Budget Tracker</span> 
+    <button class="ml-auto btn bg-red-500 p-3 text-white text-2xl rounded-full" onclick="logout()">Logout</button>
+</nav>
+    <p class="text-center fw-bolder text-6xl mt-8 text-white" id="username"></p>
+
+   <div class="flex mx-60 wp-content pl-25 bg-white rounded-xl shadow p-8 gap-8" style="margin-top: 50px;">
+
+  <!-- Form Section -->
+  <form class="rounded-lg w-1/2  pt-5">
+    <div class="mb-4">
+      <label for="income" class="block mb-2 text-xl font-medium text-gray-700 font-serif">Total Income (₹)</label>
+      <input type="text" id="income"
+        class="border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        required />
+    </div>
+    <div class="mb-4">
+      <label for="rent" class="block mb-2 text-xl font-medium text-gray-700 font-serif">Rent (₹)</label>
+      <input type="text" id="rent"
+        class="border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        required />
+    </div>
+    <div class="mb-4">
+      <label for="groceries" class="block mb-2 text-xl font-medium text-gray-700 font-serif">Groceries (₹)</label>
+      <input type="text" id="groceries"
+        class="border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        required />
+    </div>
+    <div class="mb-4">
+      <label for="transportation" class="block mb-2 text-xl font-medium text-gray-700 font-serif">Transportation (₹)</label>
+      <input type="text" id="transportation"
+        class="border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        required />
+    </div>
+    <div class="mb-4">
+      <label for="other_expense" class="block mb-2 text-xl font-medium text-gray-700 font-serif">Other Expenses (₹)</label>
+      <input type="text" id="other_expense"
+        class="border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        required />
+    </div>
+  </form>
+
+  <!-- Balance Card -->
+  <div class="flex flex-col justify-between text-center rounded-lg w-1/2  p-6 bg-white">
+    <!-- Balance Text -->
+    <div class="shadow pb-8 mt-8 pt-5 bg-teal-300 rounded-xl">
+      <h2 class="text-2xl font-bold text-gray-800">Balance</h2>
+      <p class="text-3xl font-bold text-emerald-700" id="balance"></p>
+      <!-- <p class="text-3xl font-bold text-emerald-700">₹28,000</p>
+      <p class="text-gray-600">You have saved ₹28,000.</p> -->
+    </div>
+    <div class="shadow pb-8 mt-8 pt-5 bg-red-400 rounded-xl">
+      <h2 class="text-2xl font-bold text-gray-800">Spent</h2>
+      <p class="text-3xl font-bold text-emerald-700" id="spent"></p>
+      <!-- <p class="text-3xl font-bold text-emerald-700">₹28,000</p>
+      <p class="text-gray-600">You have saved ₹28,000.</p> -->
+    </div>
+
+    <!-- Button aligned to bottom -->
+    <a href="#"
+      class="mt-auto bg-emerald-600 text-white text-xl font-medium px-5 py-2 rounded-lg hover:bg-emerald-500" onclick="calculate()">
+      Calculate
+    </a>
+  </div>
+</div>
+
+<!-- Chart container -->
+<div id="chartContainer" class="mt-5 w-full flex justify-center hidden">
+  <div class="p-4 bg-white rounded shadow" style="width: 800px; text-align: center;">
+    <canvas id="budgetChart" style="display: block; margin: auto; max-width: 400px; max-height: 400px;"></canvas>
+  </div>
+</div>
+
+
+
+
+<script>
+    // Get the currently logged-in user
+    const currentUser=localStorage.getItem("loggedUser")
+
+    if(!currentUser){
+        alert("No user found. Please login again.");
+        window.location.href = "login.html";
+    }
+
+    // Load user details
+    const userDetails=JSON.parse(localStorage.getItem(currentUser))
+
+    if (!userDetails) {
+        alert("User data missing. Please register again.");
+        window.location.href = "register.html";
+    }
+
+    // Initialize budget if not present
+    if(!userDetails.budget){
+        userDetails.budget=[]
+    }
+
+    document.getElementById("username").innerHTML = `
+  <span style="font-size: 4rem; font-weight: bold; color:white;">Welcome</span>
+  <span style="font-size: 3rem;font-weight: bold; color: yellow; margin-left: 10px;">${userDetails.username}</span>
+`;
+
+ // Show initial balance (default 0 if missing)
+let balance=userDetails.balance || 0
+document.getElementById("balance").innerHTML=`₹ ${balance.toLocaleString()}<br>
+                                              <p class="text-gray-600 text-2xl">You have saved ₹ ${balance.toLocaleString()}</p>`;
+
+// Show initial balance (default 0 if missing)
+let spent=userDetails.spent || 0
+document.getElementById("spent").innerHTML=`₹ ${spent.toLocaleString()}
+                                               <p class="text-gray-600 text-2xl">You have spent ₹ ${spent.toLocaleString()}</p>`;
+
+localStorage.setItem(currentUser,JSON.stringify({...JSON.parse(localStorage.getItem(currentUser)),budget:[]}));
+
+// Save user back to localStorage
+  function saveUser() {
+    localStorage.setItem(currentUser, JSON.stringify(userDetails));
+  }
+
+
+let chartInstance = null; // global chart variable
+
+
+  function calculate(){
+    let totin = Number(document.getElementById("income").value);
+    let rent = Number(document.getElementById("rent").value);
+    let grocer = Number(document.getElementById("groceries").value);
+    let transport = Number(document.getElementById("transportation").value);
+    let ot_exp = Number(document.getElementById("other_expense").value);
+
+
+    balance=totin-(rent+grocer+transport+ot_exp)
+    userDetails.balance=balance
+
+    spent=rent+grocer+transport+ot_exp
+    userDetails.spent=spent
+
+    userDetails.budget.push({
+        balance:balance,
+        spent:spent
+    });
+    saveUser()
+    document.getElementById("balance").innerText = `₹${balance.toLocaleString()}`;
+document.getElementById("spent").innerText = `₹${spent.toLocaleString()}`;
+
+    alert("Budget Calculated Successfully")
+
+
+  // Show the chart container
+    document.getElementById("chartContainer").classList.remove("hidden");
+
+    // Draw/Update Pie Chart
+    const ctx = document.getElementById("budgetChart").getContext("2d");
+
+    if (chartInstance) {
+        chartInstance.destroy(); // destroy previous chart before re-drawing
+    }
+
+    chartInstance = new Chart(ctx, {
+        type: "pie",
+        data: {
+            labels: ["Saved (Balance)", "Spent"],
+            datasets: [{
+                data: [balance, spent],
+                backgroundColor: ["#4CAF50", "#F44336"]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: "bottom",
+                    labels: {
+                        font: { size: 14, family: "Arial" }
+                    }
+                },
+                title: {
+                    display: true,
+                    text: "Your Budget Distribution",
+                    font: { size: 16, weight: "bold" }
+                }
+            }
+        }
+    });
+  }
+
+
+
+function logout() {
+    const currentUser = localStorage.getItem("loggedUser");
+    if (currentUser) {
+      // Get user details
+      const userDetails = JSON.parse(localStorage.getItem(currentUser));
+
+      if (userDetails) {
+        // Reset budget to empty array
+        userDetails.budget = [];
+        userDetails.balance=0
+        userDetails.spent=0
+        localStorage.setItem(currentUser, JSON.stringify(userDetails));
+      }
+
+      // Remove the loggedUser entry
+      localStorage.removeItem("loggedUser");
+
+      // Redirect to login page
+      window.location.href = "login.html";
+    }
+  }
+</script>
+
+</body>
+</html>

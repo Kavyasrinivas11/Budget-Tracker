@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Booking - Login</title>
+     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" 
+     integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+</head>
+<body class="bg-emerald-100">
+    <div class="flex items-center justify-center min-h-screen">
+<div class="flex mx-60 wp-content  pl-50 bg-white">
+    <div class="flex flex-row  text-center rounded-lg ">
+        <img src="https://static.vecteezy.com/system/resources/previews/045/346/679/non_2x/budget-planning-finance-management-illustration-vector.jpg" width="500px" height="800px" class=" p-3">
+    </div>
+    <div class="flex flex-row pr-40">
+<form class=" mx-auto rounded-lg p-15 ">
+    <div class="mt-5 mb-5 flex justify-center">
+        <img src="https://static.vecteezy.com/system/resources/previews/050/737/541/non_2x/calculator-budget-icon-free-png.png" width="100px" height="50px">
+    </div>
+    <p class="text-center mt-5 mb-8 text-6xl fw-bolder text-emerald-400 font-serif" >Budget Tracker</p>
+    <p class="text-center mt-5 mb-8 text-xl text-gray-600 font-serif" style="margin-bottom: 70px;">Create Your Account To Get Started</p>
+  <div class=" mb-5">
+    <label for="email" class=" block mb-2 text-xl font-medium text-gray-700 dark:text-white font-serif">Username</label>
+    <input type="text" id="username" class=" border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required />
+  </div>
+  <div class="mb-5">
+    <label for="password" class="block mb-2 text-xl font-medium text-gray-700 dark:text-white mt-10 font-serif">Password</label>
+    <input type="password" id="password" class=" border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+  </div>
+  <div class="text-center text-lg mt-8 mb-5" style="margin-top: 50px;">
+  <a href="javascript:void(0)" class="btn mt-5 mb-5 block w-full text-white bg-emerald-600 hover:bg-emerald-500  focus:ring-4 focus:outline-none 
+  focus:ring-blue-300 font-medium rounded-lg text-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onclick="register()">
+    Register</a>
+
+  <p class="mt-7 text-xl">
+    Already have an account ? <a href="login.html" class="text-blue-900">Login</a>
+  </p>
+</div>
+
+</form>
+    </div>
+</div>
+</div>
+
+
+<script>
+    function register(){
+        const userDetails={
+            username:username.value,
+            password:password.value
+        }
+
+        if(userDetails.username=="" || userDetails.password==""){
+            alert("Please fill the form")
+        }
+        else{
+            if(localStorage.getItem(userDetails.username)){
+                alert("Username already exists")
+            }
+            else{
+                localStorage.setItem(userDetails.username,JSON.stringify(userDetails))
+                alert("Registered Successfully");
+                 window.location.href = "./login.html";
+
+            }
+        }
+    }
+</script>
+</body>
+</html>
